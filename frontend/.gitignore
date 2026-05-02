@@ -21,3 +21,19 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Node
+node_modules/
+build/
+
+# Python
+venv/
+pycache/
+*.pyc
+db.sqlite3
+
+# Env
+.env
+
+# VS Code
+.vscode/
