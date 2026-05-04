@@ -17,7 +17,7 @@ export default function JobsSection() {
         </div>
         
         <Link
-          to="/job-details"
+          to="{`/jobs/${job.id}`}"
           className="px-6 py-3 bg-white/5 border border-white/20 rounded-lg font-medium hover:border-purple-500/50 hover:bg-white/10 transition duration-300 whitespace-nowrap"
         >
           View All Jobs →
@@ -26,9 +26,9 @@ export default function JobsSection() {
 
       {/* Jobs Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <JobCard title="Frontend Developer" company="Google" match="85%" />
-        <JobCard title="Backend Developer" company="Amazon" match="78%" />
-        <JobCard title="Full Stack Developer" company="Startup" match="90%" />
+        <JobCard job={{ title: "Frontend Developer", company: "Google", match: "85%" }} />
+        <JobCard job={{ title: "Backend Developer", company: "Amazon", match: "78%" }} />
+        <JobCard job={{ title: "Full Stack Developer", company: "Startup", match: "90%" }} />
       </div>
 
       {/* Bottom CTA */}

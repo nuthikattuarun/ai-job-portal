@@ -11,12 +11,13 @@ import RecruiterDashboard from "./pages/RecruterDashboard";
 import PostJob from "./pages/PostJob";
 
 
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/job-details" element={<JobDetails />} />
+        <Route path="/jobs/:id" element={<JobDetails />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />

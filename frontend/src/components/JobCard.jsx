@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { FiArrowRight, FiCheck } from "react-icons/fi";
 
-export default function JobCard({ title, company, match }) {
+export default function JobCard({ job = {} }) {
+  const { id, title, company, match = "100%" } = job;
+  console.log("JobCard id:", id, job);
   const matchPercentage = parseInt(match);
   const matchColor = matchPercentage >= 85 ? "green" : matchPercentage >= 70 ? "yellow" : "blue";
 
@@ -57,13 +59,15 @@ export default function JobCard({ title, company, match }) {
             Apply Now
           </button>
           
-          <Link
-            to="/job-details"
-            className="flex-1 px-4 py-2 border border-white/20 text-white font-semibold rounded-lg hover:border-white/40 hover:bg-white/5 flex items-center justify-center gap-2 transition duration-300"
-          >
-            Details
-            <FiArrowRight size={16} />
-          </Link>
+          {job?.id && (
+            <Link
+  to={`/jobs/${job.id}`}
+  className="flex-1 px-4 py-2 border border-white/20 text-white"
+>
+  Details
+  <FiArrowRight size={16} />
+</Link>
+          ) }
         </div>
       </div>
 
