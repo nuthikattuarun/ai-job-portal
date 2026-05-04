@@ -1,46 +1,73 @@
+import React from "react";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import CTA from "../components/CTA";
 
 export default function JobDetails() {
-  return (
-    <div className="bg-[#0F172A] text-white min-h-screen">
+  const { id } = useParams();
 
+  const [job, setJob] = useState(null);
+  const [error, setError] = useState(null); // ✅ fixed
+
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/api/jobs/${id}/`) // ✅ fixed quotes
+      .then(res => res.json())
+      .then(data => setJob(data))
+      .catch(err => {
+        console.log(err);
+        setError("Failed to load job");
+      });
+  }, [id]); // ✅ only one useEffect
+
+    const handleApply = () => {
+  fetch("http://127.0.0.1:8000/api/apply/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      job: id,
+      name: "Arun",
+      email: "test@gmail.com",
+      resume: "My resume",
+    }),
+  })
+    .then(res => res.json())
+    .then(data => alert("Applied successfully"))
+    .catch(err => console.log(err));
+};
+
+
+  if (error) {
+    return <div className="text-red-500 p-10">{error}</div>;
+  }
+
+  if (!job) {
+    return <div className="text-white p-10">Loading...</div>;
+  }
+
+
+  return (
+    <div className="bg-[#0f172a] text-white min-h-screen">
       <Navbar />
 
-      <section className="px-6 md:px-12 py-16 max-w-4xl mx-auto">
+      <div className="p-10">
+        <h1 className="text-3xl font-bold">{job.title}</h1>
+        <p className="text-gray-400">{job.company}</p>
+        <p className="text-gray-400">{job.location}</p>
 
-        <h1 className="text-4xl font-bold mb-4">
-          Frontend Developer
-        </h1>
-
-        <p className="text-gray-400 mb-6">
-          Company: Google • Location: Remote
-        </p>
-
-        <div className="bg-white/5 p-6 rounded-xl border border-white/10 mb-6">
-          <h2 className="text-xl font-semibold mb-3">Job Description</h2>
-          <p className="text-gray-400">
-            We are looking for a skilled frontend developer with experience in React and modern UI frameworks.
-          </p>
+        <div className="mt-6">
+          <h2 className="text-xl font-semibold">Description</h2>
+          <p>{job.description}</p>
         </div>
 
-        <div className="bg-white/5 p-6 rounded-xl border border-white/10 mb-6">
-          <h2 className="text-xl font-semibold mb-3">Required Skills</h2>
-          <ul className="list-disc list-inside text-gray-400">
-            <li>React</li>
-            <li>JavaScript</li>
-            <li>HTML & CSS</li>
-          </ul>
-        </div>
-
-        <button className="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg">
-          Apply Now
-        </button>
-
-      </section>
-
-      <CTA />
-
+        <button
+  onClick={handleApply}
+  className="mt-4 bg-blue-500 px-4 py-2 rounded"
+>
+  Apply Now
+</button>
+      </div>
     </div>
   );
 }

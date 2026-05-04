@@ -2,10 +2,25 @@ import Navbar from "../components/Navbar";
 import JobCard from "../components/JobCard";
 import CTA from "../components/CTA";
 import { FiTrendingUp, FiFileText, FiBriefcase } from "react-icons/fi";
+import { useEffect, useState } from "react";
 
 export default function Dashboard() {
+
+const [jobs,setJobs] = useState([]);
+
+  useEffect(() => {
+  fetch("http://127.0.0.1:8000/api/jobs/")
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      setJobs(data.results || data);
+    })
+    .catch((err) => console.log(err));
+}, []);
+
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-purple-950 text-white overflow-hidden">
+  
 
       {/* Animated gradient orbs */}
       <div className="absolute inset-0 pointer-events-none">
@@ -93,9 +108,9 @@ export default function Dashboard() {
               <p className="text-gray-400">Top opportunities matched to your profile</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <JobCard title="Frontend Developer" company="Google" match="85%" />
-              <JobCard title="Backend Developer" company="Amazon" match="78%" />
-              <JobCard title="Full Stack Developer" company="Startup" match="90%" />
+              {jobs.slice(0, 3).map((job) => (
+                <JobCard key={job.id} job={job} />
+              ))}
             </div>
           </div>
         </section>
@@ -106,7 +121,12 @@ export default function Dashboard() {
             <CTA />
           </div>
         </section>
-      </div>
+
+{jobs.map((job) => (
+  <JobCard key={job.id} job={job} />
+))}
+
+    </div>
     </div>
   );
 }

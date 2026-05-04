@@ -31,8 +31,32 @@ export default function Login() {
 
     setLoading(true);
     try {
-      // API call will go here
-      console.log("Login attempt:", formData);
+  const res = await fetch("http://127.0.0.1:8000/api/login/", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    email: formData.email,
+    password: formData.password,
+  }),
+});
+
+const data = await res.json();
+
+if (!res.ok) {
+  throw new Error(JSON.stringify(data));
+}
+
+// ✅ Save tokens
+localStorage.setItem("access", data.access);
+localStorage.setItem("refresh", data.refresh);
+localStorage.setItem("username", formData.email);
+
+// ✅ Redirect
+navigate("/dashboard");
+
+
       // TODO: Replace with actual API endpoint
       navigate("/dashboard");
     } catch (err) {

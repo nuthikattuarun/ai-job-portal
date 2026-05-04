@@ -44,7 +44,7 @@ export default function Hero() {
 
           {/* Secondary Button */}
           <Link
-            to="/job-details"
+            to={"/dashboard"}
             className="inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-white/20 rounded-lg font-semibold text-white hover:border-white/40 hover:bg-white/5 transition duration-300"
           >
             Explore Jobs
